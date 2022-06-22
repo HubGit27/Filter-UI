@@ -1,0 +1,84 @@
+h1 {
+    border: 5px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center
+}
+
+textarea {
+    box-shadow: inset #abacaf 0 0 0 2px;
+    border: 0;
+    background: rgba(0, 0, 0, 0);
+    appearance: none;
+    width: 80%;
+    position: relative;
+    border-radius: 3px;
+    padding: 9px 12px;
+    line-height: 1;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    font-weight: 400;
+    height: 120px;
+    transition: all .2s ease;
+}
+
+button{
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background-color: #4299e1;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    line-height: 26px;
+    width: 100px;
+}
+
+.log {
+    border: 3px solid grey;
+    box-sizing: border-box;
+    padding: 5px 5px;
+    font-size: 20px;
+    
+}
+
+.logInput{
+    place-items:  center;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    grid-gap: .5rem;
+    grid-template-columns: repeat(auto-fit);
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.button{
+    grid-gap: .5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Search {
+	display: flex;
+	align-items: center;
+	background-color: rgb(233, 233, 233);
+	border-radius: 10px;
+	padding: 5px;
+	margin-bottom: 1.5em;
+}
+
+.Search input {
+	border: none;
+	background-color: rgb(233, 233, 233);
+	width: 100%;
+}
+
+.Search input:focus {
+	outline: none;
+}

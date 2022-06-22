@@ -1,9 +1,19 @@
 import React from 'react'
+import Log from './Log'
+import '../index.css';
 
-const LogOutput = () => {
+
+
+const LogOutput = ({logs}) => {
+
   return (
-    <div>LogOutput</div>
+    <div>
+      {logs.map(log => {
+        return <Log key ={log.id} log={log} />
+    })}
+    </div>
+    
   )
 }
 
-export default LogOutput
+export default LogOutput //Goes into LogInput.js

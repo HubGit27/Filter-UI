@@ -1,21 +1,18 @@
 import React, {useState} from 'react';
 import Header from './components/Header'
 import LogInput from './components/LogInput'
-import LogOutput from './components/LogOutput'
-
-
-
-
 
 function App() {
+  const[tabs, setTabs] = useState([LogInput])
+  const[chosenTab, setChosenTab] = useState(tabs[0])
+
+
   return (
     <>
-    <Header />
+    <Header tabs = {setTabs()} chosenTab = {chosenTab}/>
     <LogInput/>
-    <LogOutput/>
     </>
-    
-  )
+  );
 }
 
 export default App;
