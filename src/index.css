@@ -4,6 +4,12 @@ h1 {
     margin-right: auto;
     text-align: center
 }
+h2 {
+    border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
 
 textarea {
     box-shadow: inset #abacaf 0 0 0 2px;
@@ -63,6 +69,10 @@ button{
     justify-content: center;
     align-items: center;
 }
+.tabs{
+    grid-gap: .1rem;
+    display: flex;
+}
 
 .Search {
 	display: flex;
@@ -82,3 +92,48 @@ button{
 .Search input:focus {
 	outline: none;
 }
+
+.tab{
+
+    cursor: pointer;
+    padding:3px 3px;
+    margin:0px 2px;
+    background:gray;
+    display:inline-block;
+    color:#fff;
+    border-radius:1px 31x 0px 0px;
+    box-shadow: 0 0.2rem 0.2rem #00000080;
+  }
+
+.add{
+    cursor: pointer;
+    padding:1px 3px;
+    margin:0px 2px;
+    background:green;
+    display:inline-block;
+    color:rgb(255, 255, 255);
+    border-radius:1px 31x 0px 0px;
+    box-shadow: 0 0.2rem 0.2rem #00000080;
+}
+
+.list{
+    padding:3px 5px;
+}
+
+.filterSettings{
+    display: flex;
+    background-color: rgba(189, 185, 185, 0.671);
+}
+
+.floatleft {
+    float:left; 
+    width: 50%;
+    background-color: #e7e7e7;
+}
+
+.floatright {
+    float:left; 
+    width: 50%;
+    background-color: #ffffff;
+}
+

@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react'
-import LogOutput from './LogOutput'
+import LogList from './LogList'
 import { v4 as uuidv4 } from 'uuid';
 import Search from './Search'
-import '../index.css';
+import '../../index.css';
 
 
 const LOCAL_STORAGE_KEY = 'LogInput.logs'
 
-const LogInput = () => {
+const LogInput = ({savedLogs}) => {
     const[logs, setLogs] = useState(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)))
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const LogInput = () => {
         const logg = log.value.split("\n")
         const newLogs = [...logs]
         for (let i = 0; i < logg.length; i++) {
-            if (logg[i] != "") {
+            if (logg[i] !== "") {
                 newLogs.push({id: uuidv4(), log:logg[i]})
             }
         }
@@ -40,11 +40,12 @@ const LogInput = () => {
         </div>
         <div className='button'>
             <button onClick={run}> Run</button>
+            <button onClick={() => savedLogs(logs)}> save</button>
             <button onClick={clear}> Clear </button>
         </div>
         <div>
             <Search searchText = {setSearchText}/>
-            <LogOutput logs = {logs.filter((log) =>
+            <LogList logs = {logs.filter((log) =>
 						log.log.toLowerCase().includes(searchText)
 					)} searchText = {searchText}/>
         </div>

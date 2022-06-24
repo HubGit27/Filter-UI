@@ -1,10 +1,10 @@
 import React from 'react'
 import Log from './Log'
-import '../index.css';
+import '../../index.css';
 
 
 
-const LogOutput = ({logs}) => {
+const LogList = ({logs}) => {
 
   return (
     <div>
@@ -16,4 +16,4 @@ const LogOutput = ({logs}) => {
   )
 }
 
-export default LogOutput //Goes into LogInput.js
+export default LogList //Goes into LogInput.js
