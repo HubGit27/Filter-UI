@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import FilterList from "./FilterList";
 import LogsList from "./LogsList";
 import { v4 as uuidv4 } from 'uuid';
-import {logs} from "../log_input/LogInput";
 
 
 const LogFilter = ({logs}) => {
@@ -31,7 +30,6 @@ const LogFilter = ({logs}) => {
   const filterSelect = (name, id) => {
     let block = filterBlocks.find(block => block.id === id )
     block.filterBy = name
-    console.log(block)
   }
 
   const checkbox = (id) => {
@@ -41,13 +39,40 @@ const LogFilter = ({logs}) => {
     } else {
       block.checkbox = false
     }
-    console.log(block)
   }
 
   const andor = (andor, id) => {
     let block = filterBlocks.find(block => block.id === id )
     block.andor = andor
-    console.log(block)
+  }
+
+  const processLogs = (logs, filterBlocks) => {
+    const newlogs = []
+    const ands = []
+    const ors = []
+    console.log("process logs")
+    console.log(logs)
+    console.log(filterBlocks)
+
+    for (let i = 0; i < filterBlocks.length; i++) {
+      if (filterBlocks[i].checkbox === true){
+          if (filterBlocks[i].andor === "and"){
+            ands.push(filterBlocks[i].filterBy)
+            console.log(ands + "ands array")
+          }else if (filterBlocks[i].andor === "or"){
+            ors.push(filterBlocks[i].filterBy)
+            console.log(ors + "ors array")
+          }
+      }
+    }
+    const newLogs = logs.filter((log) => ands.includes(log.log))
+    
+
+
+    // logs.filter((log) =>
+		// 				log.log.toLowerCase().includes(searchText)
+		// 			)
+    return newLogs
   }
 
   return (
@@ -64,7 +89,7 @@ const LogFilter = ({logs}) => {
 
       <div className ="floatright">
         <h2>Logs</h2>
-        <LogsList logs = {logs}/>
+        <LogsList logs = {processLogs(logs, filterBlocks)}/>
       </div>
     </div>
   )
