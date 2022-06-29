@@ -1,0 +1,31 @@
+button{
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background-color: #74b2e6;
+    border-radius: 4px;
+    padding: 5px 5px;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    line-height: 15px;
+    width: fit-content;
+}
+
+.log {
+    border: 3px solid grey;
+    box-sizing: border-box;
+    padding: 5px 5px;
+    font-size: 20px;   
+}
+
+.deleteButton {
+    float: right;
+    background-color: #ee3535
+}
+
+.list{
+    position: relative;
+    
+}

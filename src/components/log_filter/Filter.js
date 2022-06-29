@@ -1,40 +1,42 @@
 import React from 'react'
 import {MdDeleteOutline} from "react-icons/md";
+import './log_filter.css';
+
 
 const Filter = ({filter, filters, deleteFilter, filterSelect, checkbox, andor}) => {
 
-  const filterBy = () => {
-    filterSelect(document.getElementById("filterSelection").options[document.getElementById("filterSelection").selectedIndex].text, filter.id)
+  const filterBy = (event) => {
+    var index = event.nativeEvent.target.selectedIndex;
+    filterSelect(event.nativeEvent.target[index].text, filter.id)
   }
   const check = () =>{
     checkbox(filter.id)
   }
 
-  const andOr = () =>{
-    if(document.getElementById('and').checked == true) {
-      andor("and", filter.id)
-    }else if(document.getElementById('or').checked == true) {
-      andor("or", filter.id)
-    }
-    
+  const and = () =>{
+    andor("and", filter.id)
+  }
+
+  const or = () =>{
+    andor("or", filter.id)
   }
 
   return (
     <div className="log">
-        <input type="checkbox" onClick = {check}/>
-        <input type="radio" id = "and" name={"andor" + filter.id} onClick= {andOr} defaultChecked/>
+        <input type="checkbox" onClick = {check} defaultChecked/>
+        <input type="radio" id = "and" name={"andor" + filter.id} onClick= {and} defaultChecked/>
         <label>and </label>
-        <input type="radio" id = "or" name={"andor" + filter.id} onClick= {andOr}/>
+        <input type="radio" id = "or" name={"andor" + filter.id} onClick= {or}/>
         <label>or </label>
         <select className="list" id = "filterSelection" onChange = {filterBy}>  
             {filters.map((e) => <option key = {e.id} >{e.name}</option>)}
         </select>
 
-        <div>
-          <button onClick={() => deleteFilter(filter.id)}>
-          <MdDeleteOutline/>
-          </button>
-        </div>
+        
+        <button className = "deleteButton" onClick={() => deleteFilter(filter.id)}>
+        <MdDeleteOutline/>
+        </button>
+        
     </div>
   )
 }

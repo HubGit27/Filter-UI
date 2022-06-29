@@ -24,10 +24,12 @@ const LogInput = ({savedLogs}) => {
             }
         }
         setLogs(newLogs)
+        savedLogs(newLogs)
     }
 
     const clear = () => {
         setLogs([])
+        savedLogs([])
     }
 
     //Search Bar
@@ -40,7 +42,6 @@ const LogInput = ({savedLogs}) => {
         </div>
         <div className='button'>
             <button onClick={run}> Run</button>
-            <button onClick={() => savedLogs(logs)}> save</button>
             <button onClick={clear}> Clear </button>
         </div>
         <div>

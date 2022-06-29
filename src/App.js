@@ -1,17 +1,26 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Header from './components/main/Header'
-import LogInput from './components/log_input/LogInput'
 import Main from './components/main/Main'
 import { v4 as uuidv4 } from 'uuid';
 
 
 function App() {
-  const[tabs, setTabs] = useState([])
-  const[chosenTab, setChosenTab] = useState("none")
-  const[savedLogs, setSavedLogs] = useState([])
+  const[tabs, setTabs] = useState(localStorage.TABSAPP ? JSON.parse(localStorage.TABSAPP) : [])
+  const[chosenTab, setChosenTab] = useState(localStorage.CHOSENTABAPP ? JSON.parse(localStorage.CHOSENTABAPP) : "none")
+  const[savedLogs, setSavedLogs] = useState(localStorage.SAVEDLOGSAPP ? JSON.parse(localStorage.SAVEDLOGSAPP) : [])
 
+  useEffect(() =>{
+    localStorage.setItem('TABSAPP', JSON.stringify(tabs))
+  }, [tabs])
 
-  //chooseTab
+  useEffect(() =>{
+    localStorage.setItem('CHOSENTABAPP', JSON.stringify(chosenTab))
+  }, [chosenTab])
+
+  useEffect(() =>{
+    localStorage.setItem('SAVEDLOGSAPP', JSON.stringify(savedLogs))
+  }, [savedLogs])
+
   const chooseTab = (tab) => {
     setChosenTab(tab)
   }
