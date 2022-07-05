@@ -1,5 +1,5 @@
 import React from 'react'
-import '../../index.css';
+import './log_input.css';
 
 
 const Log = ({log}) => {

@@ -1,17 +1,16 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import LogList from './LogList'
 import { v4 as uuidv4 } from 'uuid';
 import Search from './Search'
-import '../../index.css';
+import './log_input.css';
+import axios from "axios";
 
-
-const LOCAL_STORAGE_KEY = 'LogInput.logs'
 
 const LogInput = ({savedLogs}) => {
-    const[logs, setLogs] = useState(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)))
+    const[logs, setLogs] = useState(localStorage.LogInputlogs ? JSON.parse(localStorage.LogInputlogs) : [])
 
     useEffect(() => {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(logs))
+        localStorage.setItem('LogInputlogs', JSON.stringify(logs))
     }, [logs])
 
     const run = () => {
@@ -31,6 +30,28 @@ const LogInput = ({savedLogs}) => {
         setLogs([])
         savedLogs([])
     }
+    
+    const delay = ms => new Promise(
+        resolve => setTimeout(resolve, ms)
+      );
+
+    const bool = useRef(false);
+
+    const auto = async () => {
+        for (let i = 0; i < 5; i++) {
+        await delay(1000);
+        backendLog()
+        }
+    }
+
+    const backendLog = async () => {
+        axios.get("/logs").then(response =>{
+            let templog = response.data
+            templog.id = uuidv4()
+            setLogs([...logs, templog])
+            savedLogs([...logs, templog])
+        })
+    }
 
     //Search Bar
     const[searchText, setSearchText] = useState("")
@@ -40,9 +61,12 @@ const LogInput = ({savedLogs}) => {
         <div className='logInput'>
             <textarea id= "logtext" rows = "4" cols = "50" placeholder='Paste logs here...'/>
         </div>
-        <div className='button'>
-            <button onClick={run}> Run</button>
-            <button onClick={clear}> Clear </button>
+        <div className='buttonarea'>
+            <button className='button' onClick={run}> Run</button>
+            <button className='button' onClick={clear}> Clear </button>
+            <button className='button' onClick={() => auto()}> Auto </button>
+            <button className='button' onClick={() => bool.current = false}> Stop </button>
+
         </div>
         <div>
             <Search searchText = {setSearchText}/>

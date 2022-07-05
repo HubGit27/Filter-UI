@@ -12,7 +12,10 @@ button{
     line-height: 15px;
     width: fit-content;
 }
+.settingButtons{
+    border: double;
 
+}
 .log {
     border: 3px solid grey;
     box-sizing: border-box;
@@ -22,10 +25,22 @@ button{
 
 .deleteButton {
     float: right;
-    background-color: #ee3535
+    background-color: #ee3535;
 }
 
 .list{
     position: relative;
     
+}
+
+.FilterList{
+    overflow: scroll;
+    height: 75vh;
+
+}
+
+.floatright {
+    float:left; 
+    width: 50%;
+    background-color: #ffffff;
 }

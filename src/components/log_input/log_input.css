@@ -1,0 +1,21 @@
+.buttonarea{
+    grid-gap: .5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button{
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background-color: #4299e1;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    line-height: 26px;
+    width: 100px;
+}

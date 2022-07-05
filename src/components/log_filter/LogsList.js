@@ -4,7 +4,7 @@ import Log from "./Log"
 
 const FilteredList = ({logs}) => {
   return (
-    <div>
+    <div className = "FilterList">
       {logs.map(log => {
         return <Log key = {log.id} log = {log}/>
       })}

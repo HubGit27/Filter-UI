@@ -21,12 +21,16 @@ const LogFilter = ({logs}) => {
   }
 
   const addFilterBy = () =>{
-    let filterBy = document.getElementById("filterBy").value
+    let filterBy = document.getElementById("filterBy").value.toLowerCase()
     if (filterBy === ""){
       return
     }
     setFilters([...filters, {id: uuidv4(), name:filterBy}])
     document.getElementById("filterBy").value = ""
+  }
+
+  const clearFilterBlocks = () => {
+    setFilterBlocks([])
   }
 
   const clearFilter = () => {
@@ -81,7 +85,7 @@ const LogFilter = ({logs}) => {
     // filter for, or
     if (ors.length > 0){
       output = logs.filter(l => {
-        return ors.some(term => l.log.includes(term))
+        return ors.some(term => l.log.toLowerCase().includes(term))
       })
     }
     if (output.length < 1 || ors.length < 1){
@@ -90,7 +94,7 @@ const LogFilter = ({logs}) => {
 
     // filter for ands
     const output1 = output.filter((log) => {
-        return ands.every(val => log.log.includes(val))
+        return ands.every(val => log.log.toLowerCase().includes(val))
     })
 
     return output1
@@ -99,19 +103,22 @@ const LogFilter = ({logs}) => {
   return (
     <div>
       <div className= "floatleft">
-        <div className= "filterSettings">
-          <button onClick={addFilter}>Create Filter</button>
+        <div>
           <input type="text" id="filterBy"/>
-          <button onClick={addFilterBy} >Save</button>
-          <button onClick={clearFilter}>Clear</button>
+          <button className = "settingButtons" onClick={addFilterBy} >Save</button>
+          <button className = "settingButtons" onClick={clearFilter}>Clear</button>
+        </div>
+        <div className= "filterSettings">
+          <button className = "settingButtons" onClick={addFilter}>Create Filter</button>
+          <button className = "settingButtons" onClick={clearFilterBlocks}>Clear</button>
         </div>
         <FilterList filterBlocks = {filterBlocks} filters = {filters} deleteFilter = {deleteFilter} 
         filterSelect = {filterSelect} checkbox = {checkbox} andor = {andor}/>
       </div>
 
-      <div className ="floatright">
+      <div className ="floatright" >
         <h2>Logs</h2>
-        <LogsList logs = {processLogs(logs, filterBlocks)}/>
+        <LogsList logs = {processLogs(logs, filterBlocks)} />
       </div>
     </div>
   )

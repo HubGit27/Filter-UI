@@ -1,6 +1,6 @@
 import React from 'react'
 import Log from './Log'
-import '../../index.css';
+import './log_input.css';
 
 
 
@@ -8,6 +8,7 @@ const LogList = ({logs}) => {
 
   return (
     <div>
+      {console.log(logs)}
       {logs.map(log => {
         return <Log key ={log.id} log={log} />
     })}
