@@ -2,12 +2,12 @@ import React from 'react'
 import LogInput from '../log_input/LogInput'
 import LogFilter from '../log_filter/LogFilter'
 
-const Main = ({chosenTab, savedLogs, logs}) => {
+const Main = ({chosenTab, savedLogs, logs, runAuto}) => {
 
     if (chosenTab === "LogInput"){
         return (
             <>
-            <LogInput savedLogs = {savedLogs}/>
+            <LogInput savedLogs = {savedLogs} runAuto = {runAuto}/>
             </>
           )
     } else if (chosenTab === "Filter"){

@@ -67,8 +67,6 @@ const LogFilter = ({logs}) => {
   const processLogs = (logs, filterBlocks) => {
     const ands = []
     const ors = []
-    console.log("filterblocks below")
-    console.log(filterBlocks)
 
     for (let i = 0; i < filterBlocks.length; i++) {
       if (filterBlocks[i].checkbox === true){

@@ -39,10 +39,31 @@ function App() {
     console.log(savedLogs)
   }
 
+  const [runAuto, setRunAuto] = React.useState(false)
+  React.useEffect(() => {
+      const getLogs = () => {
+          fetch("/logs")
+          .then(r => r.json())
+          .then(d => { 
+              for (let i = 0; i < d.length; i++){
+                  d[i].id = uuidv4()
+              }
+              //setLogs(d)
+              setSavedLogs(d) })
+      }
+
+      if (runAuto){
+          const handle = setInterval(getLogs, 1000);
+
+          return () => clearInterval(handle);
+      }
+  }, [runAuto])
+
+
   return (
     <>
     <Header tabs = {tabs} chosenTab = {chooseTab} addTab = {addTab} deleteTab = {deleteTab}/>
-    <Main chosenTab = {chosenTab} savedLogs = {saveLogs} logs = {savedLogs}/>
+    <Main chosenTab = {chosenTab} savedLogs = {saveLogs} logs = {savedLogs} runAuto = {(boo) => setRunAuto(boo)}/>
     </>
   );
 }

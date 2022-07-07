@@ -8,7 +8,6 @@ const LogList = ({logs}) => {
 
   return (
     <div>
-      {console.log(logs)}
       {logs.map(log => {
         return <Log key ={log.id} log={log} />
     })}
