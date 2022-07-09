@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use('/logs', logsRoutes)
 
 app.get('/', (req, res) => {
-    console.log('test')
+    console.log('Express')
     res.send('hello from homepage')
 });
 

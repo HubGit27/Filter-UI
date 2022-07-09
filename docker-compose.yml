@@ -1,0 +1,22 @@
+version: "3"
+services:
+  react-app:
+    image: reactdev2
+    stdin_open: true
+    ports:
+      - "3000:3000"
+    # networks:
+    #   - react-express
+    
+  api-server:
+    image: express
+    ports:
+      - "5000:5000"
+    # networks:
+    #   - react-express
+
+# networks:
+#   react-express:
+#     driver: bridge
+
+      
