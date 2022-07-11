@@ -12,8 +12,7 @@ app.use(bodyParser.json());
 app.use('/logs', logsRoutes)
 
 app.get('/', (req, res) => {
-    console.log('test')
-    res.send('hello from homepage')
+    res.send('hello backend')
 });
 
 app.listen(PORT, () => console.log(`Server Running on port: http://localhost:${PORT}`))
