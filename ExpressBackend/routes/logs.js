@@ -1,4 +1,4 @@
-import express, { Router } from 'express';
+import express from 'express';
 import chokidar from "chokidar";
 import {readFileSync} from 'node:fs';
 
@@ -7,9 +7,7 @@ const router = express.Router();
 //{log: "test1"}
 let logs = []
 
-// for (let i = 0; i < 200; i++) {
-//     logs = {log: i};
-// }
+let filelogs = new Object();
 
 // Routes from here start with /logs
 router.get('/', (req,res) => {
@@ -30,6 +28,7 @@ const watcher = chokidar.watch('watch-folder', {
 
 watcher.on('ready', ()=>{
     console.log("Watching Files")
+    console.log(logs)
 })
 
 //When file is added
@@ -38,18 +37,31 @@ watcher.on('add', path => {
     const file = readFileSync(path);
     let decodedVal = Buffer.from(file, 'base64').toString('ascii');
     const loglist = decodedVal.split("\n")
+    filelogs[path] = loglist
     for (let i = 0; i < loglist.length; i++ ){
         if (loglist[i].length > 0) {
             const logobject = {log : loglist[i]}
             logs.push(logobject)
-            console.log(logobject)
         }
     }
+    console.log(logs)
 })
 
+function removeItemOnce(arr, value) {
+    var index = arr.indexOf(value);
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+    return arr;
+  }
 //when file is deleted
 watcher.on('unlink', path => {
     console.log(path, "file removed")
+    for (let i = 0; i < filelogs[path].length; i++ ){
+        logs = removeItemOnce(logs,filelogs[path][i])
+    }
+    delete filelogs[path]
+    console.log(logs)
 })
 
 //when file is changed
@@ -58,11 +70,22 @@ watcher.on('change', path => {
     const file = readFileSync(path);
     let decodedVal = Buffer.from(file, 'base64').toString('ascii');
     const loglist = decodedVal.split("\n")
-    const lastlog = (loglist[loglist.length-1])
-    if (lastlog.length > 0) {
-        const logobject = {log : lastlog}
-        logs.push(logobject)
+    if (loglist.length > filelogs[path].length){
+        for (let i = filelogs[path].length; i < loglist.length; i++ ){
+            if (loglist[i].length > 0) {
+                filelogs[path].push(loglist[i])
+                const logobject = {log : loglist[i]}
+                logs.push(logobject)
+            }
+        }
+    } else if (loglist.length < filelogs[path].length){
+        difference = filelogs[path].filter(x => !loglist.includes(x));
+        logs = logs.filter( ( el ) => !difference.includes( el ) );
+        filelogs[path] = filelogs[path].filter( ( el ) => !difference.includes( el ) );
+
     }
+
+    console.log(logs)
 
 })
 
