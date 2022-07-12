@@ -20,10 +20,13 @@ const Filter = ({filter, filters, deleteFilter, filterSelect, checkbox, andor}) 
   const or = () =>{
     andor("or", filter.id)
   }
+  {console.log(filter)}
+
+
 
   return (
     <div className="log">
-        <input type="checkbox" onClick = {check} defaultChecked/>
+        <input type="checkbox" onClick = {check} {(filter.checkbox) ? 'defaultChecked': null}defaultChecked/>
         <input type="radio" id = "and" name={"andor" + filter.id} onClick= {and} defaultChecked/>
         <label>and </label>
         <input type="radio" id = "or" name={"andor" + filter.id} onClick= {or}/>

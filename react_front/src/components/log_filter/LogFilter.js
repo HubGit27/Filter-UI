@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 const LogFilter = ({logs}) => {
   const[filterBlocks, setFilterBlocks] = useState(localStorage.FILTERBLOCKSLOGFILTER ? JSON.parse(localStorage.FILTERBLOCKSLOGFILTER) : [])
   const[filters, setFilters] = useState(localStorage.FILTERSLOGFILTER ? JSON.parse(localStorage.FILTERSLOGFILTER) : [{id: uuidv4(), name:"Add new filters"}])
+  const[configurations, setConfigurations] = useState(localStorage.FILTERBLOCKSLOGFILTER ? JSON.parse(localStorage.FILTERBLOCKSLOGFILTER) : [])
 
   useEffect(() =>{
     localStorage.setItem('FILTERBLOCKSLOGFILTER', JSON.stringify(filterBlocks))
@@ -15,6 +16,10 @@ const LogFilter = ({logs}) => {
   useEffect(() =>{
     localStorage.setItem('FILTERSLOGFILTER', JSON.stringify(filters))
   }, [filters])
+
+  useEffect(() =>{
+    localStorage.setItem('CONFIGURATIONSLOGFILTER', JSON.stringify(configurations))
+  }, [configurations])
 
   const addFilter = () => {
     setFilterBlocks([...filterBlocks, {id: uuidv4(), filterBy:"", checkbox: true, andor: "and"}])
@@ -32,9 +37,46 @@ const LogFilter = ({logs}) => {
   const clearFilterBlocks = () => {
     setFilterBlocks([])
   }
-
+  
   const clearFilter = () => {
     setFilters([{id: uuidv4(), name:"Add new filters"}])
+  }
+
+  const saveConfiguration = () => {
+    let ConfName = document.getElementById("ConfName").value
+    let duplicate = false
+      for (let i = 0; i < configurations.length; i++) {
+        if (ConfName === configurations[i].name || ConfName === ""){
+          duplicate = true
+        }
+      }
+    if (duplicate === true){
+      document.getElementById("ConfName").value = "Name already exist";
+    } else {
+      setConfigurations([...configurations, {name: ConfName, filters:filters, blocks:filterBlocks} ])
+      document.getElementById("ConfName").value = "";
+      console.log(configurations)
+    }
+  }
+
+  const deleteConfiguration = () => {
+    let ConfName = document.getElementById("ConfName").value
+    let newConfifurations = configurations.filter(conf => conf.name !== ConfName)
+    setConfigurations(newConfifurations)
+    console.log(configurations)
+    document.getElementById("ConfName").value = "";
+  }
+
+  const selectConfiguration = () => {
+    let ConfName = document.getElementById("ConfName").value
+    for (let i = 0; i < configurations.length; i++){
+      if (ConfName === configurations[i].name){
+        setFilters(configurations[i].filters)
+        setFilterBlocks(configurations[i].blocks)
+      }
+    }
+    document.getElementById("ConfName").value = "";
+    console.log(filterBlocks)
   }
 
   const deleteFilter = (id) => {
@@ -102,7 +144,10 @@ const LogFilter = ({logs}) => {
     <div>
       <div className= "floatleft">
         <div>
-          <input type="text" id="filterBy"/>
+          <input list="FilterBy" id="filterBy"/>  
+          <datalist id="FilterBy">
+            {filters.map((e) => <option key = {uuidv4()}>{e.name}</option>)}
+          </datalist>
           <button className = "settingButtons" onClick={addFilterBy} >Save</button>
           <button className = "settingButtons" onClick={clearFilter}>Clear</button>
         </div>
@@ -110,6 +155,16 @@ const LogFilter = ({logs}) => {
           <button className = "settingButtons" onClick={addFilter}>Create Filter</button>
           <button className = "settingButtons" onClick={clearFilterBlocks}>Clear</button>
         </div>
+        <div className= "filterSettings">
+          <button className = "settingButtons" onClick={saveConfiguration}>Save Configuration</button>
+          <button className = "settingButtons" onClick={deleteConfiguration}>Delete</button>
+          <button className = "settingButtons" onClick={selectConfiguration}>Select</button>
+          <input list="configs" id="ConfName"/>  
+          <datalist id="configs">
+            {configurations.map((e) => <option key = {uuidv4()} >{e.name}</option>)}
+          </datalist>
+        </div>
+        
         <FilterList filterBlocks = {filterBlocks} filters = {filters} deleteFilter = {deleteFilter} 
         filterSelect = {filterSelect} checkbox = {checkbox} andor = {andor}/>
       </div>
