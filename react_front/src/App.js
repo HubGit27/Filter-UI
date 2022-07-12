@@ -44,7 +44,7 @@ function App() {
 
   // React.useEffect(() => {
   //     const getLogs = () => {
-  //         fetch("http://localhost:5000/logs")
+  //         fetch("/logs")
   //         .then(r => r.json())
   //         .then(d => { 
   //             for (let i = 0; i < d.length; i++){
@@ -62,13 +62,11 @@ function App() {
   // }, [runAuto])
   React.useEffect(() => {
     const getLogs = () => {
-        Axios.get("/logs")
-        .then(d => { 
-            for (let i = 0; i < d.length; i++){
-                d[i].id = uuidv4()
+        Axios.get("/logs").then((r) => { 
+            for (let i = 0; i < r.data.length; i++){
+                r.data[i].id = uuidv4()
             }
-            //setLogs(d)
-            setSavedLogs(d) })
+            setSavedLogs(r.data) })
     }
 
     if (runAuto){
@@ -76,7 +74,7 @@ function App() {
 
         return () => clearInterval(handle);
     }
-}, [runAuto])
+  }, [runAuto])
 
 
   return (

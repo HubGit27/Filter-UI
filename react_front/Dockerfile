@@ -10,15 +10,7 @@
 
 # RUN npm run build
 
-# FROM nginx:1.12-alpine
-
-# COPY --from=build /code/build /usr/share/nginx/html
-
-# EXPOSE 80
-
-# CMD ["nginx", "-g", "daemon off;"]
-
-##docker run --rm -it --name web -p 3000:80 <imagename>
+# CMD ["sh", "-c", "npm run start:build"]
 
 FROM node:17 
 
