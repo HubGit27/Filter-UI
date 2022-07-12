@@ -79,7 +79,7 @@ watcher.on('change', path => {
             }
         }
     } else if (loglist.length < filelogs[path].length){
-        difference = filelogs[path].filter(x => !loglist.includes(x));
+        let difference = filelogs[path].filter(x => !loglist.includes(x));
         logs = logs.filter( ( el ) => !difference.includes( el ) );
         filelogs[path] = filelogs[path].filter( ( el ) => !difference.includes( el ) );
 

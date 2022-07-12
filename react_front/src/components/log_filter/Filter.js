@@ -20,19 +20,20 @@ const Filter = ({filter, filters, deleteFilter, filterSelect, checkbox, andor}) 
   const or = () =>{
     andor("or", filter.id)
   }
-  {console.log(filter)}
+  console.log(filter)
 
-
+//{(filter.checkbox) ? 'defaultChecked': null}
 
   return (
     <div className="log">
-        <input type="checkbox" onClick = {check} {(filter.checkbox) ? 'defaultChecked': null}defaultChecked/>
-        <input type="radio" id = "and" name={"andor" + filter.id} onClick= {and} defaultChecked/>
+        <input type="checkbox" onClick = {check} defaultChecked={filter.checkbox}/>
+        <input type="radio" id = "and" name={"andor" + filter.id} onClick= {and} defaultChecked={filter.andor === "and" ? true : false}/>
         <label>and </label>
-        <input type="radio" id = "or" name={"andor" + filter.id} onClick= {or}/>
+        <input type="radio" id = "or" name={"andor" + filter.id} onClick= {or} defaultChecked={filter.andor === "or" ? true : false}/>
         <label>or </label>
         <select className="list" id = "filterSelection" onChange = {filterBy}>  
-            {filters.map((e) => <option key = {e.id} >{e.name}</option>)}
+          <option selected disabled hidden>Select Filter</option>
+            {filters.map((e) => <option selected={filter.filterBy === e.name ? true : false} key = {e.id} >{e.name}</option>)}
         </select>
 
         

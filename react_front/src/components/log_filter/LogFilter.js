@@ -6,8 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 const LogFilter = ({logs}) => {
   const[filterBlocks, setFilterBlocks] = useState(localStorage.FILTERBLOCKSLOGFILTER ? JSON.parse(localStorage.FILTERBLOCKSLOGFILTER) : [])
-  const[filters, setFilters] = useState(localStorage.FILTERSLOGFILTER ? JSON.parse(localStorage.FILTERSLOGFILTER) : [{id: uuidv4(), name:"Add new filters"}])
-  const[configurations, setConfigurations] = useState(localStorage.FILTERBLOCKSLOGFILTER ? JSON.parse(localStorage.FILTERBLOCKSLOGFILTER) : [])
+  const[filters, setFilters] = useState(localStorage.FILTERSLOGFILTER ? JSON.parse(localStorage.FILTERSLOGFILTER) : [{id: uuidv4()}])
+  const[configurations, setConfigurations] = useState(localStorage.CONFIGURATIONSLOGFILTER ? JSON.parse(localStorage.CONFIGURATIONSLOGFILTER) : [])
 
   useEffect(() =>{
     localStorage.setItem('FILTERBLOCKSLOGFILTER', JSON.stringify(filterBlocks))
@@ -39,7 +39,7 @@ const LogFilter = ({logs}) => {
   }
   
   const clearFilter = () => {
-    setFilters([{id: uuidv4(), name:"Add new filters"}])
+    setFilters([])
   }
 
   const saveConfiguration = () => {

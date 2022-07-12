@@ -1,10 +1,8 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import LogList from './LogList'
 import { v4 as uuidv4 } from 'uuid';
 import Search from './Search'
 import './log_input.css';
-import axios from "axios";
-
 
 const LogInput = ({savedLogs, runAuto}) => {
     const[logs, setLogs] = useState(localStorage.LogInputlogs ? JSON.parse(localStorage.LogInputlogs) : [])
