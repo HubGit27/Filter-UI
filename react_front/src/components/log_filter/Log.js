@@ -3,7 +3,7 @@ import React from 'react'
 
 const Log = (log) => {
   return (
-    <div className="log">{log.log.log}</div>
+    <div className="logentry">{log.log.log}</div>
   )
 }
 

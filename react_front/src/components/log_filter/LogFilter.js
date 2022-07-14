@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import FilterList from "./FilterList";
 import LogsList from "./LogsList";
 import { v4 as uuidv4 } from 'uuid';
+//import micromatch from 'micromatch';
 
-
-const LogFilter = ({logs}) => {
+const LogFilter = ({logs, trackLogs}) => {
   const[filterBlocks, setFilterBlocks] = useState(localStorage.FILTERBLOCKSLOGFILTER ? JSON.parse(localStorage.FILTERBLOCKSLOGFILTER) : [])
   const[filters, setFilters] = useState(localStorage.FILTERSLOGFILTER ? JSON.parse(localStorage.FILTERSLOGFILTER) : [{id: uuidv4()}])
   const[configurations, setConfigurations] = useState(localStorage.CONFIGURATIONSLOGFILTER ? JSON.parse(localStorage.CONFIGURATIONSLOGFILTER) : [])
@@ -21,8 +21,16 @@ const LogFilter = ({logs}) => {
     localStorage.setItem('CONFIGURATIONSLOGFILTER', JSON.stringify(configurations))
   }, [configurations])
 
+  const trackFiles = () => {
+    trackLogs(true)
+  }
+
+  const stopTracking = () => {
+    trackLogs(false)
+  }
+
   const addFilter = () => {
-    setFilterBlocks([...filterBlocks, {id: uuidv4(), filterBy:"", checkbox: true, andor: "and"}])
+    setFilterBlocks([...filterBlocks, {id: uuidv4(), filterBy:"", checkbox: true, andor: "and", regex: false}])
   }
 
   const addFilterBy = () =>{
@@ -106,6 +114,17 @@ const LogFilter = ({logs}) => {
     setFilterBlocks([...filterBlocks])
   }
 
+  const regex = (id) => {
+    let block = filterBlocks.find(block => block.id === id )
+    if (block.regex === false){
+      block.regex = true
+    } else {
+      block.regex = false
+    }
+    console.log(block)
+    setFilterBlocks([...filterBlocks])
+  }
+
   const processLogs = (logs, filterBlocks) => {
     const ands = []
     const ors = []
@@ -142,35 +161,53 @@ const LogFilter = ({logs}) => {
 
   return (
     <div>
-      <div className= "floatleft">
-        <div>
-          <input list="FilterBy" id="filterBy"/>  
-          <datalist id="FilterBy">
-            {filters.map((e) => <option key = {uuidv4()}>{e.name}</option>)}
-          </datalist>
-          <button className = "settingButtons" onClick={addFilterBy} >Save</button>
-          <button className = "settingButtons" onClick={clearFilter}>Clear</button>
-        </div>
-        <div className= "filterSettings">
-          <button className = "settingButtons" onClick={addFilter}>Create Filter</button>
-          <button className = "settingButtons" onClick={clearFilterBlocks}>Clear</button>
-        </div>
-        <div className= "filterSettings">
-          <button className = "settingButtons" onClick={saveConfiguration}>Save Configuration</button>
-          <button className = "settingButtons" onClick={deleteConfiguration}>Delete</button>
-          <button className = "settingButtons" onClick={selectConfiguration}>Select</button>
-          <input list="configs" id="ConfName"/>  
-          <datalist id="configs">
-            {configurations.map((e) => <option key = {uuidv4()} >{e.name}</option>)}
-          </datalist>
+      <div className= "allFilterOptionFlex">
+        <div className= "filterSettingsLeft">
+          <div className= "trackbuttons">
+            <button className = "trackbutton" onClick={trackFiles}>Track Files</button>
+            <button className = "stoptrackbutton" onClick={stopTracking}>Stop Tracking</button>
+          </div>
+          <div className= "trackbuttons">
+            <button className = "greenwords" onClick={addFilterBy} >Save</button>
+            <button className = "redwords" onClick={clearFilter}>Clear</button>
+          </div>
+          <div>
+              <input className='listOfFilters' list="FilterBy" id="filterBy" placeholder="Add words to filter"/>  
+              <datalist id="FilterBy">
+                {filters.map((e) => <option key = {uuidv4()}>{e.name}</option>)}
+              </datalist>
+          </div>
         </div>
         
-        <FilterList filterBlocks = {filterBlocks} filters = {filters} deleteFilter = {deleteFilter} 
-        filterSelect = {filterSelect} checkbox = {checkbox} andor = {andor}/>
+        <div className= "filterSettings">
+          <div className= "trackbuttons">
+            <button className = "greenwords" onClick={addFilter}>Create Filter</button>
+            <button className = "redwords" onClick={clearFilterBlocks}>Clear Filters</button>
+          </div>
+
+          <div className= "trackbuttons">
+            <button className = "greenwords" onClick={saveConfiguration}>Save Configuration</button>
+            <button className = "redwords" onClick={deleteConfiguration}>Delete Configuration</button>
+            <button className = "bluewords" onClick={selectConfiguration}>Select Configuration</button>
+          </div>
+
+          <div>
+            <input list="configs" id="ConfName" placeholder="Pre-loaded Configurations" className='listOfFilters'/>  
+            <datalist id="configs">
+              {configurations.map((e) => <option key = {uuidv4()} >{e.name}</option>)}
+            </datalist>
+          </div>
+        </div>
+
+        <div className='FilterBlocks'>
+          <FilterList filterBlocks = {filterBlocks} filters = {filters} deleteFilter = {deleteFilter} 
+          filterSelect = {filterSelect} checkbox = {checkbox} andor = {andor} regex = {regex}/>
+        </div>
+
       </div>
 
-      <div className ="floatright" >
-        <h2>Logs</h2>
+      <div className ="logFileEntries" >
+        <h2>Log File Entries</h2>
         <LogsList logs = {processLogs(logs, filterBlocks)} />
       </div>
     </div>

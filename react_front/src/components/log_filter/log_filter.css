@@ -1,9 +1,75 @@
+.allFilterOptionFlex {
+    display:flex;
+    background-color: #d4d4d4;
+    align-items: center;
+    justify-content:space-between;
+}
+
+.trackbuttons{
+    display:flex;
+    flex-direction:row;
+}
+
+.filterSettings{
+    display:flex;
+    flex-direction:column;
+}
+.filterSettingsLeft{
+    display:flex;
+    flex-direction:column;
+}
+
+.filterSettingsRi{
+    display:flex;
+    flex-direction:column;
+}
+
+.trackbutton{
+    border: double;
+    width:100%;
+    background-color: #2d99d8
+}
+
+.stoptrackbutton{
+    border: double;
+    width:100%;
+    background-color: #2d99d8
+}
+
+.greenwords{
+    border: double;
+    width:100%;
+    background-color: #2d99d8
+}
+
+.redwords{
+    border: double;
+    width:100%;
+    background-color: #2d99d8
+}
+.bluewords{
+    border: double;
+    width:100%;
+    background-color: #2d99d8
+}
+
+.listOfFilters{
+    width: 98%;
+
+}
+
+h2{
+    color:#ffffff ;
+    background-color: #000000;
+
+}
+
 button{
     display: inline-block;
     outline: 0;
     border: 0;
     cursor: pointer;
-    background-color: #74b2e6;
+    background-color: #fafafa;
     border-radius: 4px;
     padding: 5px 5px;
     font-size: 16px;
@@ -14,9 +80,17 @@ button{
 }
 .settingButtons{
     border: double;
-
+    width:100%
 }
 .log {
+    border: 3px solid grey;
+    box-sizing: border-box;
+    padding: 5px 5px;
+    font-size: 20px;   
+    display: inline-block;
+    background-color: #ffffff;
+}
+.logentry {
     border: 3px solid grey;
     box-sizing: border-box;
     padding: 5px 5px;
@@ -30,17 +104,22 @@ button{
 
 .list{
     position: relative;
+    max-width: 110px;
     
+}
+
+.FilterBlocks{
+    overflow: scroll;
+    height: 100px;
+    width: 58%;
+
 }
 
 .FilterList{
     overflow: scroll;
-    height: 75vh;
-
+    height: 71vh;
 }
 
-.floatright {
-    float:left; 
-    width: 50%;
+.logFileEntries {
     background-color: #ffffff;
 }

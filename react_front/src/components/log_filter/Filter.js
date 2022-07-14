@@ -3,7 +3,7 @@ import {MdDeleteOutline} from "react-icons/md";
 import './log_filter.css';
 
 
-const Filter = ({filter, filters, deleteFilter, filterSelect, checkbox, andor}) => {
+const Filter = ({filter, filters, deleteFilter, filterSelect, checkbox, andor, regex}) => {
 
   const filterBy = (event) => {
     var index = event.nativeEvent.target.selectedIndex;
@@ -20,7 +20,10 @@ const Filter = ({filter, filters, deleteFilter, filterSelect, checkbox, andor}) 
   const or = () =>{
     andor("or", filter.id)
   }
-  console.log(filter)
+
+  const Regex = () => {
+    regex(filter.id)
+  }
 
 //{(filter.checkbox) ? 'defaultChecked': null}
 
@@ -35,7 +38,8 @@ const Filter = ({filter, filters, deleteFilter, filterSelect, checkbox, andor}) 
           <option selected disabled hidden>Select Filter</option>
             {filters.map((e) => <option selected={filter.filterBy === e.name ? true : false} key = {e.id} >{e.name}</option>)}
         </select>
-
+        <label> regex </label>
+        <input type="checkbox" onClick = {Regex} defaultChecked={filter.regex}/>
         
         <button className = "deleteButton" onClick={() => deleteFilter(filter.id)}>
         <MdDeleteOutline/>

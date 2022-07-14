@@ -1,14 +1,22 @@
 import React from 'react';
-import Tab from './Tab'
 import '../../index.css';
 
-const Header = ({tabs, chosenTab, addTab, deleteTab}) => {
+const Header = () => {
 
   return (
   <>
     <header>
       <h1>System Controller Team Demo</h1>
     </header>
+    <hr></hr>
+  </>
+   
+  )
+}
+
+export default Header // Goes to App.js
+
+/*
     <div className="tabs">
       <form className="tab">
         <label className="add" onClick={() => addTab(document.getElementById('selection')[document.getElementById('selection').selectedIndex].value)}> + </label>  
@@ -21,10 +29,4 @@ const Header = ({tabs, chosenTab, addTab, deleteTab}) => {
           return <Tab key = {tab.id} tab={tab} chosenTab={chosenTab} deleteTab = {deleteTab}/>
       })}
     </div>
-    <hr></hr>
-  </>
-   
-  )
-}
-
-export default Header // Goes to App.js
+*/
