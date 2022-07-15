@@ -1,8 +1,13 @@
+html{
+    background-color: rgb(43, 41, 41);
+}
+
 h1 {
-    border: 5px solid black;
+    /* border: 5px solid rgb(0, 0, 0); */
     margin-left: auto;
     margin-right: auto;
-    text-align: center
+    text-align: center;
+    color: rgb(236, 233, 233);
 }
 h2 {
     border: 1px solid black;
@@ -10,7 +15,11 @@ h2 {
     margin-right: auto;
     text-align: center;
 }
-
+hr {
+    height: 2px;
+    background-color: rgb(0, 0, 0);
+    border:none
+}
 textarea {
     box-shadow: inset #abacaf 0 0 0 2px;
     border: 0;
@@ -125,15 +134,4 @@ button{
     background-color: rgba(189, 185, 185, 0.671);
 }
 
-.floatleft {
-    float:left; 
-    width: 50%;
-    background-color: #e7e7e7;
-}
-
-.floatright {
-    float:left; 
-    width: 50%;
-    background-color: #ffffff;
-}
 
