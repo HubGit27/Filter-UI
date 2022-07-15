@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Router } from 'express';
 import chokidar from "chokidar";
 import {readFileSync} from 'node:fs';
 
@@ -6,8 +6,30 @@ const router = express.Router();
 
 //{log: "test1"}
 let logs = []
-
 let filelogs = new Object();
+let sort = {data:"Oldest"}
+
+const sortLogs = (value) => {
+
+    if (value.data === "A-Z"){
+        logs = logs.sort((a,b) => {
+            return (a.log > b.log) ? 1 : -1
+        })
+        } else if  (value.data === "Z-A"){
+        logs = logs.sort((a,b) => {
+            return (a.log < b.log) ? 1 : -1
+        })
+        } else if (value.data === "Oldest"){
+        logs = logs.sort((a,b) => {
+            return (a.time > b.time) ? 1 : -1
+        })
+        } else if (value.data === "Newest"){
+        logs = logs.sort((a,b) => {
+            return (a.time < b.time) ? 1 : -1
+        })
+        }
+}
+
 
 // Routes from here start with /logs
 router.get('/', (req,res) => {
@@ -16,9 +38,9 @@ router.get('/', (req,res) => {
 
 router.post('/', (req, res) => {
     console.log('post route reached');
-    const log = req.body
-    logs.push(log)
-    res.send(`Log with the name ${log.log} added to the database`);
+    sort = req.body
+    sortLogs(sort)
+    res.send(`Logs sorted by ${req.body}`);
 })
 
 const watcher = chokidar.watch('watch-folder', {
@@ -40,27 +62,27 @@ watcher.on('add', path => {
     filelogs[path] = loglist
     for (let i = 0; i < loglist.length; i++ ){
         if (loglist[i].length > 0) {
-            const logobject = {log : loglist[i]}
+            const logobject = {log : loglist[i], time : Date.now()}
             logs.push(logobject)
         }
     }
+    sortLogs(sort)
     console.log(logs)
 })
 
-function removeItemOnce(arr, value) {
-    var index = arr.indexOf(value);
-    if (index > -1) {
-      arr.splice(index, 1);
-    }
-    return arr;
-  }
 //when file is deleted
 watcher.on('unlink', path => {
     console.log(path, "file removed")
-    for (let i = 0; i < filelogs[path].length; i++ ){
-        logs = removeItemOnce(logs,filelogs[path][i])
-    }
+    logs = []
     delete filelogs[path]
+    for (const key in filelogs) {
+        for (let i = 0; i < filelogs[key].length; i++ ){
+            if (filelogs[key][i].length > 0){
+                logs.push({log: filelogs[key][i], time : Date.now()})
+            }
+        }
+    }
+    sortLogs(sort)
     console.log(logs)
 })
 
@@ -70,23 +92,29 @@ watcher.on('change', path => {
     const file = readFileSync(path);
     let decodedVal = Buffer.from(file, 'base64').toString('ascii');
     const loglist = decodedVal.split("\n")
+
     if (loglist.length > filelogs[path].length){
         for (let i = filelogs[path].length; i < loglist.length; i++ ){
             if (loglist[i].length > 0) {
                 filelogs[path].push(loglist[i])
-                const logobject = {log : loglist[i]}
+                const logobject = {log : loglist[i], time : Date.now()}
                 logs.push(logobject)
             }
         }
-    } else if (loglist.length < filelogs[path].length){
-        let difference = filelogs[path].filter(x => !loglist.includes(x));
-        logs = logs.filter( ( el ) => !difference.includes( el ) );
-        filelogs[path] = filelogs[path].filter( ( el ) => !difference.includes( el ) );
-
+    } else{
+        delete filelogs[path]
+        filelogs[path] = loglist
+        logs = []
+        for (const key in filelogs) {
+            for (let i = 0; i < filelogs[key].length; i++ ){
+                if (filelogs[key][i].length > 0){
+                    logs.push({log: filelogs[key][i], time : Date.now()})
+                }
+            }
+        }
     }
-
+    sortLogs(sort)
     console.log(logs)
-
 })
 
 export default router

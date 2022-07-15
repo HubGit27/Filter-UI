@@ -58,11 +58,6 @@
 
 }
 
-h2{
-    color:#ffffff ;
-    background-color: #000000;
-
-}
 
 button{
     display: inline-block;
@@ -128,4 +123,19 @@ button{
 
 .logFileEntries {
     background-color: #272727;
+}
+
+h2{
+    color:#ffffff ;
+    background-color: #000000;
+}
+
+.logFileEntriesheader{
+    display: flex;
+    background-color: #000000;
+    flex-shrink: 0;
+}
+
+.sort{
+    flex-shrink: 2;
 }
