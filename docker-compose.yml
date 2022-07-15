@@ -30,6 +30,7 @@ networks:
   react-express:
     driver: bridge
 
-# in the react_front, change the localhost in the proxy to "http://api-server:5000"
+# in the react_front, change the localhost in the proxy to "http://api-server:5000" from   "proxy": "http://localhost:5000",
+
 
       

@@ -44,8 +44,8 @@ const Filter = ({filter, filters, deleteFilter, filterSelect, checkbox, andor, r
           <option selected disabled hidden>Select Filter</option>
             {filters.map((e) => <option selected={filter.filterBy === e.name ? true : false} key = {e.id} >{e.name}</option>)}
         </select> */}
-        <label> regex </label>
-        <input type="checkbox" onClick = {Regex} defaultChecked={filter.regex}/>
+        {/* <label> regex </label>
+        <input type="checkbox" onClick = {Regex} defaultChecked={filter.regex}/> */}
         
         <button className = "deleteButton" onClick={() => deleteFilter(filter.id)}>
         <MdDeleteOutline/>

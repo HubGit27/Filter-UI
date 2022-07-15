@@ -111,7 +111,7 @@ button{
 .FilterBlocks{
     overflow: scroll;
     height: 100px;
-    width: 58%;
+    width: 63%;
     overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
