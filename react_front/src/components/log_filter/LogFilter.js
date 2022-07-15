@@ -32,23 +32,21 @@ const LogFilter = ({logs, trackLogs}) => {
   const addFilter = () => {
     setFilterBlocks([...filterBlocks, {id: uuidv4(), filterBy:"", checkbox: true, andor: "and", regex: false}])
   }
-
-  const addFilterBy = () =>{
-    let filterBy = document.getElementById("filterBy").value.toLowerCase()
-    if (filterBy === ""){
-      return
-    }
-    setFilters([...filters, {id: uuidv4(), name:filterBy}])
-    document.getElementById("filterBy").value = ""
-  }
-
   const clearFilterBlocks = () => {
     setFilterBlocks([])
   }
-  
-  const clearFilter = () => {
-    setFilters([])
-  }
+  // const addFilterBy = () =>{
+  //   let filterBy = document.getElementById("filterBy").value.toLowerCase()
+  //   if (filterBy === ""){
+  //     return
+  //   }
+  //   setFilters([...filters, {id: uuidv4(), name:filterBy}])
+  //   document.getElementById("filterBy").value = ""
+  // }
+
+  // const clearFilter = () => {
+  //   setFilters([])
+  // }
 
   const saveConfiguration = () => {
     let ConfName = document.getElementById("ConfName").value
@@ -121,14 +119,12 @@ const LogFilter = ({logs, trackLogs}) => {
     } else {
       block.regex = false
     }
-    console.log(block)
-    setFilterBlocks([...filterBlocks])
   }
 
   const processLogs = (logs, filterBlocks) => {
     const ands = []
     const ors = []
-
+    console.log(filterBlocks)
     for (let i = 0; i < filterBlocks.length; i++) {
       if (filterBlocks[i].checkbox === true){
           if (filterBlocks[i].andor === "and"){
@@ -159,6 +155,30 @@ const LogFilter = ({logs, trackLogs}) => {
     return output1
   }
 
+  async function saveFile() {
+
+    // create a new handle
+    const newHandle = await window.showSaveFilePicker();
+  
+    // create a FileSystemWritableFileStream to write to
+    const writableStream = await newHandle.createWritable();
+
+    const blob = new Blob([JSON.stringify(filterBlocks, null, 2)], {type : 'application/json'});
+    // write our file
+    await writableStream.write(blob);
+  
+    // close the file and write the contents to disk.
+    await writableStream.close();
+  }
+
+  async function getFile() {
+    // open file picker
+    const [fileHandle] = await window.showOpenFilePicker();
+    // get file contents
+    const fileData = await fileHandle.getFile();
+    console.log(JSON.parse(fileData))
+  }
+
   return (
     <div>
       <div className= "allFilterOptionFlex">
@@ -167,7 +187,7 @@ const LogFilter = ({logs, trackLogs}) => {
             <button className = "trackbutton" onClick={trackFiles}>Track Files</button>
             <button className = "stoptrackbutton" onClick={stopTracking}>Stop Tracking</button>
           </div>
-          <div className= "trackbuttons">
+          {/* <div className= "trackbuttons">
             <button className = "greenwords" onClick={addFilterBy} >Save</button>
             <button className = "redwords" onClick={clearFilter}>Clear</button>
           </div>
@@ -176,7 +196,7 @@ const LogFilter = ({logs, trackLogs}) => {
               <datalist id="FilterBy">
                 {filters.map((e) => <option key = {uuidv4()}>{e.name}</option>)}
               </datalist>
-          </div>
+          </div> */}
         </div>
         
         <div className= "filterSettings">
@@ -186,13 +206,16 @@ const LogFilter = ({logs, trackLogs}) => {
           </div>
 
           <div className= "trackbuttons">
-            <button className = "greenwords" onClick={saveConfiguration}>Save Configuration</button>
+            <button className = "greenwords" onClick={saveConfiguration}>Save Filters</button>
             <button className = "redwords" onClick={deleteConfiguration}>Delete Configuration</button>
-            <button className = "bluewords" onClick={selectConfiguration}>Select Configuration</button>
+            <button className = "bluewords" onClick={selectConfiguration}>Select Filters</button>
+            <button className = "bluewords" onClick={saveFile}>button 2.0</button>
+            <button className = "bluewords" onClick={getFile}>button 3.0</button>
+
           </div>
 
           <div>
-            <input list="configs" id="ConfName" placeholder="Pre-loaded Configurations" className='listOfFilters'/>  
+            <input list="configs" id="ConfName" placeholder="Saved Filters" className='listOfFilters'/>  
             <datalist id="configs">
               {configurations.map((e) => <option key = {uuidv4()} >{e.name}</option>)}
             </datalist>
