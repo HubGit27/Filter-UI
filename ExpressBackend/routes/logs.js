@@ -62,7 +62,7 @@ watcher.on('add', path => {
     filelogs[path] = loglist
     for (let i = 0; i < loglist.length; i++ ){
         if (loglist[i].length > 0) {
-            const logobject = {log : loglist[i], time : Date.now()}
+            const logobject = {log : loglist[i], time : Date.now()+i}
             logs.push(logobject)
         }
     }
@@ -78,7 +78,7 @@ watcher.on('unlink', path => {
     for (const key in filelogs) {
         for (let i = 0; i < filelogs[key].length; i++ ){
             if (filelogs[key][i].length > 0){
-                logs.push({log: filelogs[key][i], time : Date.now()})
+                logs.push({log: filelogs[key][i], time : Date.now()+i})
             }
         }
     }
@@ -97,7 +97,7 @@ watcher.on('change', path => {
         for (let i = filelogs[path].length; i < loglist.length; i++ ){
             if (loglist[i].length > 0) {
                 filelogs[path].push(loglist[i])
-                const logobject = {log : loglist[i], time : Date.now()}
+                const logobject = {log : loglist[i], time : Date.now()+i}
                 logs.push(logobject)
             }
         }
@@ -108,7 +108,7 @@ watcher.on('change', path => {
         for (const key in filelogs) {
             for (let i = 0; i < filelogs[key].length; i++ ){
                 if (filelogs[key][i].length > 0){
-                    logs.push({log: filelogs[key][i], time : Date.now()})
+                    logs.push({log: filelogs[key][i], time : Date.now()+i})
                 }
             }
         }

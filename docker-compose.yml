@@ -25,7 +25,7 @@ services:
 volumes:
   logs:
 # on windows, go to this file path to send logs \\wsl$\docker-desktop-data\data\docker\volumes\reacttest_logs\_data\watch-folder
-
+# on centos, /var/lib/docker/volumes/reacttest_logs/_data/watch-folder/
 networks:
   react-express:
     driver: bridge
