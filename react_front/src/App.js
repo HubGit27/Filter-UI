@@ -4,12 +4,16 @@ import Header from './components/main/Header'
 import LogFilter from './components/log_filter/LogFilter';
 import { v4 as uuidv4 } from 'uuid';
 import Axios from 'axios';
+import axios from 'axios';
 
 
 function App() {
   // const[tabs, setTabs] = useState(localStorage.TABSAPP ? JSON.parse(localStorage.TABSAPP) : [])
   // const[chosenTab, setChosenTab] = useState(localStorage.CHOSENTABAPP ? JSON.parse(localStorage.CHOSENTABAPP) : "none")
   const[savedLogs, setSavedLogs] = useState(localStorage.SAVEDLOGSAPP ? JSON.parse(localStorage.SAVEDLOGSAPP) : [])
+  const[sort, setSort] = useState("")
+
+
 
   // useEffect(() =>{
   //   localStorage.setItem('TABSAPP', JSON.stringify(tabs))
@@ -35,9 +39,9 @@ function App() {
   //   const newTabs = tabs.filter((tabs) => tabs.id !== id);
   //   setTabs(newTabs)
   // }
-  const clearlogs = (id) => {
-    setSavedLogs([])
-  }
+  // const clearlogs = (id) => {
+  //   setSavedLogs([])
+  // }
   // const saveLogs = (logs) =>{
   //   setSavedLogs(logs)
   //   console.log(savedLogs)
@@ -51,7 +55,9 @@ function App() {
             for (let i = 0; i < r.data.length; i++){
                 r.data[i].id = uuidv4()
             }
-            setSavedLogs(r.data) })
+            setSavedLogs(r.data)
+            chooseSort(sort)
+        })
     }
 
     if (runAuto){
@@ -60,6 +66,34 @@ function App() {
         return () => clearInterval(handle);
     }
   }, [runAuto])
+
+  const chooseSort = (value) => {
+    if (value === "A-Z"){
+      savedLogs.sort((a,b) => {
+        return (a.log > b.log) ? 1 : -1
+      })
+    } else if  (value === "Z-A"){
+      savedLogs.sort((a,b) => {
+        return (a.log < b.log) ? 1 : -1
+      })
+    } else if (value === "Oldest"){
+      savedLogs.sort((a,b) => {
+        return (a.time > b.time) ? 1 : -1
+      })
+    } else if (value === "Newest"){
+      savedLogs.sort((a,b) => {
+        return (a.time < b.time) ? 1 : -1
+      })
+    }
+    setSort(value)
+  }
+  
+  const changeSort = (value) => {
+    axios.post("/logs", {data:value})
+    .then(res => {
+      console.log(res)
+    })
+  }
 
 
   //<Main chosenTab = {chosenTab} savedLogs = {saveLogs} logs = {savedLogs} runAuto = {(boo) => setRunAuto(boo)}/>
@@ -70,7 +104,7 @@ function App() {
     <Header />
      {//tabs = {tabs} chosenTab = {chooseTab} addTab = {addTab} deleteTab = {deleteTab}
     }
-    <LogFilter logs = {savedLogs} trackLogs = {(boo) => setRunAuto(boo)}/>
+    <LogFilter logs = {savedLogs} trackLogs = {(boo) => setRunAuto(boo)} chooseSort = {(value) => changeSort(value)}/>
     </>
   );
 }

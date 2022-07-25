@@ -10,7 +10,7 @@
 
 # RUN npm run build
 
-# CMD ["sh", "-c", "npm run start:build"]
+# CMD ["node", "server.js"]
 
 FROM node:17 
 

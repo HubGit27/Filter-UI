@@ -4,10 +4,11 @@ import LogsList from "./LogsList";
 import { v4 as uuidv4 } from 'uuid';
 //import micromatch from 'micromatch';
 
-const LogFilter = ({logs, trackLogs}) => {
+const LogFilter = ({logs, trackLogs, chooseSort}) => {
   const[filterBlocks, setFilterBlocks] = useState(localStorage.FILTERBLOCKSLOGFILTER ? JSON.parse(localStorage.FILTERBLOCKSLOGFILTER) : [])
   const[filters, setFilters] = useState(localStorage.FILTERSLOGFILTER ? JSON.parse(localStorage.FILTERSLOGFILTER) : [{id: uuidv4()}])
   const[configurations, setConfigurations] = useState(localStorage.CONFIGURATIONSLOGFILTER ? JSON.parse(localStorage.CONFIGURATIONSLOGFILTER) : [])
+
 
   useEffect(() =>{
     localStorage.setItem('FILTERBLOCKSLOGFILTER', JSON.stringify(filterBlocks))
@@ -48,42 +49,40 @@ const LogFilter = ({logs, trackLogs}) => {
   //   setFilters([])
   // }
 
-  const saveConfiguration = () => {
-    let ConfName = document.getElementById("ConfName").value
-    let duplicate = false
-      for (let i = 0; i < configurations.length; i++) {
-        if (ConfName === configurations[i].name || ConfName === ""){
-          duplicate = true
-        }
-      }
-    if (duplicate === true){
-      document.getElementById("ConfName").value = "Name already exist";
-    } else {
-      setConfigurations([...configurations, {name: ConfName, filters:filters, blocks:filterBlocks} ])
-      document.getElementById("ConfName").value = "";
-      console.log(configurations)
-    }
-  }
+  // const saveConfiguration = () => {
+  //   let ConfName = document.getElementById("ConfName").value
+  //   let duplicate = false
+  //     for (let i = 0; i < configurations.length; i++) {
+  //       if (ConfName === configurations[i].name || ConfName === ""){
+  //         duplicate = true
+  //       }
+  //     }
+  //   if (duplicate === true){
+  //     document.getElementById("ConfName").value = "Name already exist";
+  //   } else {
+  //     setConfigurations([...configurations, {name: ConfName, filters:filters, blocks:filterBlocks} ])
+  //     document.getElementById("ConfName").value = "";
+  //     console.log(configurations)
+  //   }
+  // }
 
-  const deleteConfiguration = () => {
-    let ConfName = document.getElementById("ConfName").value
-    let newConfifurations = configurations.filter(conf => conf.name !== ConfName)
-    setConfigurations(newConfifurations)
-    console.log(configurations)
-    document.getElementById("ConfName").value = "";
-  }
+  // const deleteConfiguration = () => {
+  //   let ConfName = document.getElementById("ConfName").value
+  //   let newConfifurations = configurations.filter(conf => conf.name !== ConfName)
+  //   setConfigurations(newConfifurations)
+  //   document.getElementById("ConfName").value = "";
+  // }
 
-  const selectConfiguration = () => {
-    let ConfName = document.getElementById("ConfName").value
-    for (let i = 0; i < configurations.length; i++){
-      if (ConfName === configurations[i].name){
-        setFilters(configurations[i].filters)
-        setFilterBlocks(configurations[i].blocks)
-      }
-    }
-    document.getElementById("ConfName").value = "";
-    console.log(filterBlocks)
-  }
+  // const selectConfiguration = () => {
+  //   let ConfName = document.getElementById("ConfName").value
+  //   for (let i = 0; i < configurations.length; i++){
+  //     if (ConfName === configurations[i].name){
+  //       setFilters(configurations[i].filters)
+  //       setFilterBlocks(configurations[i].blocks)
+  //     }
+  //   }
+  //   document.getElementById("ConfName").value = "";
+  // }
 
   const deleteFilter = (id) => {
     const newFilterBlocks = filterBlocks.filter((filterBlock) => filterBlock.id !== id);
@@ -124,7 +123,6 @@ const LogFilter = ({logs, trackLogs}) => {
   const processLogs = (logs, filterBlocks) => {
     const ands = []
     const ors = []
-    console.log(filterBlocks)
     for (let i = 0; i < filterBlocks.length; i++) {
       if (filterBlocks[i].checkbox === true){
           if (filterBlocks[i].andor === "and"){
@@ -156,17 +154,13 @@ const LogFilter = ({logs, trackLogs}) => {
   }
 
   async function saveFile() {
-
     // create a new handle
     const newHandle = await window.showSaveFilePicker();
-  
     // create a FileSystemWritableFileStream to write to
     const writableStream = await newHandle.createWritable();
-
     const blob = new Blob([JSON.stringify(filterBlocks, null, 2)], {type : 'application/json'});
     // write our file
     await writableStream.write(blob);
-  
     // close the file and write the contents to disk.
     await writableStream.close();
   }
@@ -176,7 +170,12 @@ const LogFilter = ({logs, trackLogs}) => {
     const [fileHandle] = await window.showOpenFilePicker();
     // get file contents
     const fileData = await fileHandle.getFile();
-    console.log(JSON.parse(fileData))
+    const text = await (new Response(fileData)).text();
+    const temp = JSON.parse(text);
+    setFilterBlocks(temp)
+  }
+  const ChooseSort = () => {
+    chooseSort(document.getElementById("sortselect").value)
   }
 
   return (
@@ -206,20 +205,18 @@ const LogFilter = ({logs, trackLogs}) => {
           </div>
 
           <div className= "trackbuttons">
-            <button className = "greenwords" onClick={saveConfiguration}>Save Filters</button>
-            <button className = "redwords" onClick={deleteConfiguration}>Delete Configuration</button>
-            <button className = "bluewords" onClick={selectConfiguration}>Select Filters</button>
-            <button className = "bluewords" onClick={saveFile}>button 2.0</button>
-            <button className = "bluewords" onClick={getFile}>button 3.0</button>
+            <button className = "greenwords" onClick={saveFile}>Save Filters</button>
+            {/* <button className = "redwords" onClick={deleteConfiguration}>Delete Configuration</button> */}
+            <button className = "bluewords" onClick={getFile}>Select Filters</button>
+
 
           </div>
-
-          <div>
+          {/* <div>
             <input list="configs" id="ConfName" placeholder="Saved Filters" className='listOfFilters'/>  
             <datalist id="configs">
               {configurations.map((e) => <option key = {uuidv4()} >{e.name}</option>)}
             </datalist>
-          </div>
+          </div> */}
         </div>
 
         <div className='FilterBlocks'>
@@ -230,7 +227,16 @@ const LogFilter = ({logs, trackLogs}) => {
       </div>
 
       <div className ="logFileEntries" >
-        <h2>Log File Entries</h2>
+        <div className ="logFileEntriesheader">
+          <h2>Log File Entries</h2>
+          <select className = "sort" onChange={ChooseSort} id="sortselect">
+            <option value="Oldest">Oldest</option>
+            <option value="Newest">Newest</option>
+            <option value="A-Z">A-Z</option>
+            <option value="Z-A">Z-A</option>
+          </select>
+        </div>
+        
         <LogsList logs = {processLogs(logs, filterBlocks)} />
       </div>
     </div>
