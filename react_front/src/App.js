@@ -56,7 +56,6 @@ function App() {
                 r.data[i].id = uuidv4()
             }
             setSavedLogs(r.data)
-            chooseSort(sort)
         })
     }
 
@@ -66,27 +65,6 @@ function App() {
         return () => clearInterval(handle);
     }
   }, [runAuto])
-
-  const chooseSort = (value) => {
-    if (value === "A-Z"){
-      savedLogs.sort((a,b) => {
-        return (a.log > b.log) ? 1 : -1
-      })
-    } else if  (value === "Z-A"){
-      savedLogs.sort((a,b) => {
-        return (a.log < b.log) ? 1 : -1
-      })
-    } else if (value === "Oldest"){
-      savedLogs.sort((a,b) => {
-        return (a.time > b.time) ? 1 : -1
-      })
-    } else if (value === "Newest"){
-      savedLogs.sort((a,b) => {
-        return (a.time < b.time) ? 1 : -1
-      })
-    }
-    setSort(value)
-  }
   
   const changeSort = (value) => {
     axios.post("/logs", {data:value})
@@ -94,7 +72,6 @@ function App() {
       console.log(res)
     })
   }
-
 
   //<Main chosenTab = {chosenTab} savedLogs = {saveLogs} logs = {savedLogs} runAuto = {(boo) => setRunAuto(boo)}/>
   return (
