@@ -10,7 +10,6 @@ let filelogs = new Object();
 let sort = {data:"Oldest"}
 
 const sortLogs = (value) => {
-
     if (value.data === "A-Z"){
         logs = logs.sort((a,b) => {
             return (a.log > b.log) ? 1 : -1

@@ -3,12 +3,8 @@ import {MdDeleteOutline} from "react-icons/md";
 import './log_filter.css';
 
 
-const Filter = ({filter, filters, deleteFilter, filterSelect, checkbox, andor, regex}) => {
+const Filter = ({filter, deleteFilter, filterSelect, checkbox, andor, regex}) => {
 
-  const filterBy = (event) => {
-    var index = event.nativeEvent.target.selectedIndex;
-    filterSelect(event.nativeEvent.target[index].text, filter.id)
-  }
   const filterByText = () => {
     var index = document.getElementById('filterByText'+filter.id).value;
     console.log(index)
@@ -26,9 +22,9 @@ const Filter = ({filter, filters, deleteFilter, filterSelect, checkbox, andor, r
     andor("or", filter.id)
   }
 
-  const Regex = () => {
-    regex(filter.id)
-  }
+  // const Regex = () => {
+  //   regex(filter.id)
+  // }
 
 //{(filter.checkbox) ? 'defaultChecked': null}
 
@@ -40,13 +36,6 @@ const Filter = ({filter, filters, deleteFilter, filterSelect, checkbox, andor, r
         <input type="radio" id = "or" name={"andor" + filter.id} onClick= {or} defaultChecked={filter.andor === "or" ? true : false}/>
         <label>or </label>
         <input type="text" className="list" id = {"filterByText"+filter.id} onChange = {filterByText} value={filter.filterBy === "" ? "" : filter.filterBy}/>
-        {/* <select className="list" id = "filterSelection" onChange = {filterBy}>  
-          <option selected disabled hidden>Select Filter</option>
-            {filters.map((e) => <option selected={filter.filterBy === e.name ? true : false} key = {e.id} >{e.name}</option>)}
-        </select> */}
-        {/* <label> regex </label>
-        <input type="checkbox" onClick = {Regex} defaultChecked={filter.regex}/> */}
-        
         <button className = "deleteButton" onClick={() => deleteFilter(filter.id)}>
         <MdDeleteOutline/>
         </button>
