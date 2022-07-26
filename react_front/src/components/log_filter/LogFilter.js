@@ -4,7 +4,7 @@ import LogsList from "./LogsList";
 import { v4 as uuidv4 } from 'uuid';
 //import micromatch from 'micromatch';
 
-const LogFilter = ({logs, trackLogs, chooseSort}) => {
+const LogFilter = ({logs, trackLogs, chooseSort, important}) => {
   const[filterBlocks, setFilterBlocks] = useState(localStorage.FILTERBLOCKSLOGFILTER ? JSON.parse(localStorage.FILTERBLOCKSLOGFILTER) : [])
 
   useEffect(() =>{
@@ -17,6 +17,10 @@ const LogFilter = ({logs, trackLogs, chooseSort}) => {
 
   const stopTracking = () => {
     trackLogs(false)
+  }
+
+  const importantLogs = () => {
+    important(document.getElementById("important").checked)
   }
 
   const addFilter = () => {
@@ -124,20 +128,31 @@ const LogFilter = ({logs, trackLogs, chooseSort}) => {
       <div className= "allFilterOptionFlex">
         <div className= "filterSettingsLeft">
           <div className= "trackbuttons">
-            <button className = "trackbutton" onClick={trackFiles}>Track Files</button>
-            <button className = "stoptrackbutton" onClick={stopTracking}>Stop Tracking</button>
+            <div className= "filterSettings">
+              <button className = "trackbutton" onClick={trackFiles}>Track Files</button>
+              <button className = "trackbutton" onClick={stopTracking}>Stop Tracking</button>
+            </div>
+            <div className= "filterSettings">
+              <label className= "importantLabel">JHSC Team</label>
+              <label className= "importantLabel">Logs</label>
+              <label class="switch">
+                <input type="checkbox" id="important" onClick={importantLogs}/>
+                <span class="slider"></span>
+              </label>
+            </div>
+
           </div>
         </div>
         
         <div className= "filterSettings">
           <div className= "trackbuttons">
-            <button className = "greenwords" onClick={addFilter}>Create Filter</button>
-            <button className = "redwords" onClick={clearFilterBlocks}>Clear Filters</button>
+            <button className = "trackbutton" onClick={addFilter}>Create Filter</button>
+            <button className = "trackbutton" onClick={clearFilterBlocks}>Clear Filters</button>
           </div>
 
           <div className= "trackbuttons">
-            <button className = "greenwords" onClick={saveFile}>Save Filters</button>
-            <button className = "bluewords" onClick={getFile}>Select Filters</button>
+            <button className = "trackbutton" onClick={saveFile}>Save Filters</button>
+            <button className = "trackbutton" onClick={getFile}>Select Filters</button>
           </div>
         </div>
 

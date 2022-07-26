@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 import chokidar from "chokidar";
 import {readFileSync} from 'node:fs';
+import e from 'express';
 
 const router = express.Router();
 
@@ -8,6 +9,9 @@ const router = express.Router();
 let logs = []
 let filelogs = new Object();
 let sort = {data:"Oldest"}
+let important = false
+let importantLogs = []
+
 
 const sortLogs = (value) => {
     if (value.data === "A-Z"){
@@ -27,19 +31,43 @@ const sortLogs = (value) => {
             return (a.time < b.time) ? 1 : -1
         })
         }
+
+    displayImportant()
+}
+
+const displayImportant = () => {
+    var re = /(?<=\").*?(?=\")+/g;
+    importantLogs = []
+    for (let i = 0; i < logs.length; i++ ){
+        let temp = (logs[i].log.match(re) || []).join('');
+        if (temp.length > 0){
+            importantLogs.push({log:temp, time: logs[i].time})
+        }
+    }
 }
 
 
 // Routes from here start with /logs
 router.get('/', (req,res) => {
-    res.send(logs);
+    if (important === false){
+        res.send(logs);
+    }
+    else{
+        res.send(importantLogs);
+    }
 });
 
 router.post('/', (req, res) => {
     console.log('post route reached');
     sort = req.body
+    if (sort.data === false || sort.data === true){
+        important = sort.data
+        res.send(`important sort ${req.body}`);
+    }
+    else{
     sortLogs(sort)
     res.send(`Logs sorted by ${req.body}`);
+    }
 })
 
 const watcher = chokidar.watch('watch-folder', {

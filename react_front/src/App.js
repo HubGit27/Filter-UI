@@ -37,10 +37,17 @@ function App() {
     })
   }
 
+  const importantLogs = (boo) => {
+    Axios.post("/logs", {data:boo})
+    .then(res => {
+      console.log(res)
+    })
+  }
+
   return (
     <>
     <Header />
-    <LogFilter logs = {savedLogs} trackLogs = {(boo) => setRunAuto(boo)} chooseSort = {(value) => changeSort(value)}/>
+    <LogFilter logs = {savedLogs} trackLogs = {(boo) => setRunAuto(boo)} chooseSort = {(value) => changeSort(value)} important = {(boo) => importantLogs(boo)}/>
     </>
   );
 }
