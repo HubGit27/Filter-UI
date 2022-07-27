@@ -74,7 +74,6 @@ const watcher = chokidar.watch('watch-folder', {
     persistent:true,
 //    ignoreInitial:true
 })
-watcher.add('test-folder');
 
 watcher.on('ready', ()=>{
     console.log("Watching Files")
