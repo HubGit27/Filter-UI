@@ -1,12 +1,9 @@
 version: "3"
 services:
-
   api-server:
     build: ./ExpressBackend
     volumes:
-      - "/home/bta/log/emu_log/:/usr/src/app/watch-folder"
-
-
+      - "{PATH}:/usr/src/app/watch-folder"
     image: express
     ports:
       - "5000:5000"
@@ -23,8 +20,6 @@ services:
       - react-express
     depends_on:
       - api-server
-
-
 
 # on windows, go to this file path to send logs \\wsl$\docker-desktop-data\data\docker\volumes\reacttest_logs\_data\watch-folder
 # on centos, /var/lib/docker/volumes/reacttest_logs/_data/watch-folder/

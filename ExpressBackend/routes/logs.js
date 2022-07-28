@@ -36,12 +36,14 @@ const sortLogs = (value) => {
 }
 
 const displayImportant = () => {
-    var re = /(?<=\").*?(?=\")+/g;
+    let re = /(?<=\").*?(?=\")+/g;
     importantLogs = []
     for (let i = 0; i < logs.length; i++ ){
         let temp = (logs[i].log.match(re) || []).join('');
+        let logdate = /(?<=\>1 ).*?(?=\.)+/g;
+        let temp1 = (logs[i].log.match(logdate) || []).join('');
         if (temp.length > 0){
-            importantLogs.push({log:temp, time: logs[i].time})
+            importantLogs.push({log:temp1+" - "+temp, time: logs[i].time})
         }
     }
 }
