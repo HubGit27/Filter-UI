@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Header from './components/main/Header'
 import LogFilter from './components/log_filter/LogFilter';
 import { v4 as uuidv4 } from 'uuid';
-import Axios from 'axios';
+import axios from 'axios';
 
 function App() {
 
@@ -14,9 +14,13 @@ function App() {
 
   const [runAuto, setRunAuto] = React.useState(true)
 
+  const api = axios.create({
+    baseURL: "http://api-server:5000"
+  })
+
   React.useEffect(() => {
     const getLogs = () => {
-        Axios.get("/logs").then((r) => { 
+        api.get("/logs").then((r) => { 
             for (let i = 0; i < r.data.length; i++){
                 r.data[i].id = uuidv4()
             }
@@ -31,14 +35,14 @@ function App() {
   }, [runAuto])
   
   const changeSort = (value) => {
-    Axios.post("/logs", {data:value})
+    api.post("/logs", {data:value})
     .then(res => {
       console.log(res)
     })
   }
 
   const importantLogs = (boo) => {
-    Axios.post("/logs", {data:boo})
+    api.post("/logs", {data:boo})
     .then(res => {
       console.log(res)
     })

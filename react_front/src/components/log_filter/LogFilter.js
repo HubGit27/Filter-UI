@@ -135,9 +135,9 @@ const LogFilter = ({logs, trackLogs, chooseSort, important}) => {
             <div className= "filterSettings">
               <label className= "importantLabel">JHSC Team</label>
               <label className= "importantLabel">Logs</label>
-              <label class="switch">
+              <label className="switch">
                 <input type="checkbox" id="important" onClick={importantLogs}/>
-                <span class="slider"></span>
+                <span className="slider"></span>
               </label>
             </div>
 

@@ -1,10 +1,13 @@
 import express, { Router } from 'express';
 import chokidar from "chokidar";
 import {readFileSync} from 'node:fs';
-import e from 'express';
+import cors from 'cors'
+
 
 const router = express.Router();
-
+router.use(cors({
+    origin: 'http://localhost:3000'
+}))
 //{log: "test1"}
 let logs = []
 let filelogs = new Object();
