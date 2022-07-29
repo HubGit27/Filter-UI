@@ -15,7 +15,7 @@ function App() {
   const [runAuto, setRunAuto] = React.useState(true)
 
   const api = axios.create({
-    baseURL: "http://api-server:5000"
+    baseURL: "http://localhost:5000"
   })
 
   React.useEffect(() => {

@@ -3,7 +3,7 @@ services:
   api-server:
     build: ./ExpressBackend
     volumes:
-      - "{PATH}:/usr/src/app/watch-folder"
+      - "C:/Users/Brandon/Documents/Coding Project/Junk/hello-world/:/usr/src/app/watch-folder"
     image: express
     ports:
       - "5000:5000"
@@ -15,7 +15,7 @@ services:
     image: react
     stdin_open: true
     ports:
-      - "3000:3000"
+      - "3000:80"
     networks:
       - react-express
     depends_on:
