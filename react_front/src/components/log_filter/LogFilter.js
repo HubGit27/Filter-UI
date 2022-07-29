@@ -6,17 +6,22 @@ import { v4 as uuidv4 } from 'uuid';
 
 const LogFilter = ({logs, trackLogs, chooseSort, important}) => {
   const[filterBlocks, setFilterBlocks] = useState(localStorage.FILTERBLOCKSLOGFILTER ? JSON.parse(localStorage.FILTERBLOCKSLOGFILTER) : [])
+  const[importantBoolean, setImportantBoolean] = useState(true)
 
   useEffect(() =>{
     localStorage.setItem('FILTERBLOCKSLOGFILTER', JSON.stringify(filterBlocks))
   }, [filterBlocks])
 
   const trackFiles = () => {
-    trackLogs(true)
-  }
+    if (importantBoolean === true){
+      trackLogs(false)
+      setImportantBoolean(false)
 
-  const stopTracking = () => {
-    trackLogs(false)
+    }
+    else if (importantBoolean === false){
+      trackLogs(true)
+      setImportantBoolean(true)
+    }
   }
 
   const importantLogs = () => {
@@ -37,7 +42,7 @@ const LogFilter = ({logs, trackLogs, chooseSort, important}) => {
 
   const filterSelect = (name, id) => {
     let block = filterBlocks.find(block => block.id === id )
-    block.filterBy = name
+    block.filterBy = name.toLowerCase()
     setFilterBlocks([...filterBlocks])
   }
 
@@ -129,8 +134,7 @@ const LogFilter = ({logs, trackLogs, chooseSort, important}) => {
         <div className= "filterSettingsLeft">
           <div className= "trackbuttons">
             <div className= "filterSettings">
-              <button className = "trackbutton" onClick={trackFiles}>Track Files</button>
-              <button className = "trackbutton" onClick={stopTracking}>Stop Tracking</button>
+              <button className = "trackbutton" onClick={trackFiles}>{importantBoolean === false ? "Start Tracking":"Stop Tracking"}</button>
             </div>
             <div className= "filterSettings">
               <label className= "importantLabel">JHSC Team</label>

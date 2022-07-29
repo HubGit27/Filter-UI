@@ -1,9 +1,17 @@
-version: "3"
+version: "3.9"
 services:
   api-server:
     build: ./ExpressBackend
     volumes:
-      - "C:/Users/Brandon/Documents/Coding Project/Junk/hello-world/:/usr/src/app/watch-folder"
+      # - type: volume
+      #   source: mydata
+      #   target: /usr/src/app/watch-folder
+      #   volume:
+      #     nocopy: true
+      - type: bind
+        source: C:/Users/Brandon/Documents/Coding Project/Junk/hello-world/
+        target: /usr/src/app/watch-folder
+      # - "C:/Users/Brandon/Documents/Coding Project/Junk/hello-world/:/usr/src/app/watch-folder"
     image: express
     ports:
       - "5000:5000"
@@ -20,6 +28,9 @@ services:
       - react-express
     depends_on:
       - api-server
+
+# volumes:
+#   mydata:
 
 # on windows, go to this file path to send logs \\wsl$\docker-desktop-data\data\docker\volumes\reacttest_logs\_data\watch-folder
 # on centos, /var/lib/docker/volumes/reacttest_logs/_data/watch-folder/
