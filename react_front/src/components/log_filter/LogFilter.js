@@ -134,7 +134,7 @@ const LogFilter = ({logs, trackLogs, chooseSort, important}) => {
         <div className= "filterSettingsLeft">
           <div className= "trackbuttons">
             <div className= "filterSettings">
-              <button className = "trackbutton" onClick={trackFiles}>{importantBoolean === false ? "Start Tracking":"Stop Tracking"}</button>
+              <button className = "trackbuttonfill" onClick={trackFiles}>{importantBoolean === false ? "Start Tracking":"Stop Tracking"}</button>
             </div>
             <div className= "filterSettings">
               <label className= "importantLabel">JHSC Team</label>
