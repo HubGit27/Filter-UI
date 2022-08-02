@@ -69,21 +69,38 @@ const LogFilter = ({logs, trackLogs, chooseSort, important}) => {
     } else {
       block.regex = false
     }
+    setFilterBlocks([...filterBlocks])
+
   }
 
   const processLogs = (logs, filterBlocks) => {
     const ands = []
     const ors = []
     for (let i = 0; i < filterBlocks.length; i++) {
-      if (filterBlocks[i].checkbox === true){
+      if (filterBlocks[i].checkbox === true && filterBlocks[i].regex === false){
           if (filterBlocks[i].andor === "and"){
             ands.push(filterBlocks[i].filterBy)
 
           }else if (filterBlocks[i].andor === "or"){
             ors.push(filterBlocks[i].filterBy)
           }
+      } 
+      if (filterBlocks[i].checkbox === true && filterBlocks[i].regex === true){
+        let regex = new RegExp(filterBlocks[i].filterBy);
+        for (let j = 0; j < logs.length; j++ ){
+          let temp = (logs[j].log.match(regex) || []).join('');
+          if (temp.length > 0 && filterBlocks[i].andor === "and" &&ands.indexOf(temp) < 1){
+              ands.push(temp)
+          } else if (temp.length > 0 && filterBlocks[i].andor === "or"){
+              ors.push(temp)
+          }
+        }
       }
     }
+
+    //console.log(ands)
+    //console.log(ors)
+
     let output = []
     // filter for, or
     if (ors.length > 0){

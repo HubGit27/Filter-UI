@@ -3,7 +3,7 @@ services:
   api-server:
     build: ./ExpressBackend
     volumes:
-      - "{PATH}:/usr/src/app/watch-folder"
+      - "C:/Users/Brandon/Documents/Coding Project/Junk/hello-world:/usr/src/app/watch-folder"
 
       # - type: volume
       #   source: mydata

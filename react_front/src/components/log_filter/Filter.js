@@ -22,9 +22,9 @@ const Filter = ({filter, deleteFilter, filterSelect, checkbox, andor, regex}) =>
     andor("or", filter.id)
   }
 
-  // const Regex = () => {
-  //   regex(filter.id)
-  // }
+  const Regex = () => {
+    regex(filter.id)
+  }
 
 //{(filter.checkbox) ? 'defaultChecked': null}
 
@@ -36,6 +36,8 @@ const Filter = ({filter, deleteFilter, filterSelect, checkbox, andor, regex}) =>
         <input type="radio" id = "or" name={"andor" + filter.id} onClick= {or} defaultChecked={filter.andor === "or" ? true : false}/>
         <label>or </label>
         <input type="text" className="list" id = {"filterByText"+filter.id} onChange = {filterByText} value={filter.filterBy === "" ? "" : filter.filterBy}/>
+        <label> regex </label>
+        <input type="checkbox" onClick = {Regex} defaultChecked={filter.regex}/>
         <button className = "deleteButton" onClick={() => deleteFilter(filter.id)}>
         <MdDeleteOutline/>
         </button>
