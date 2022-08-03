@@ -18,42 +18,44 @@ let importantLogs = []
 
 
 const sortLogs = (value) => {
-    if (value.data === "A-Z"){
-        if (important === true){
-            importantLogs = importantLogs.sort((a,b) => {
-                console.log(a)
-                return (a.important > b.important) ? 1 : -1
-            })
-        }else {
+    if (important === false){
+        if (value.data === "A-Z"){
             logs = logs.sort((a,b) => {
                 return (a.log > b.log) ? 1 : -1
             })
+        } else if  (value.data === "Z-A"){
+            logs = logs.sort((a,b) => {
+                return (a.log < b.log) ? 1 : -1
+            }) 
+        } else if (value.data === "Oldest"){
+        logs = logs.sort((a,b) => {
+            return (a.time > b.time) ? 1 : -1
+        })
+        } else if (value.data === "Newest"){
+        logs = logs.sort((a,b) => {
+            return (a.time < b.time) ? 1 : -1
+        })
         }
-
-    } else if  (value.data === "Z-A"){
-        if (important === true){
+    }else{
+        if (value.data === "A-Z"){
+            importantLogs = importantLogs.sort((a,b) => {
+                return (a.important > b.important) ? 1 : -1
+            })
+        } else if  (value.data === "Z-A"){
             importantLogs = importantLogs.sort((a,b) => {
                 return (a.important < b.important) ? 1 : -1
             })
-        }else {
-            logs = logs.sort((a,b) => {
-                return (a.log < b.log) ? 1 : -1
+        } else if (value.data === "Oldest"){
+            importantLogs = importantLogs.sort((a,b) => {
+            return (a.time > b.time) ? 1 : -1
+            })
+        } else if (value.data === "Newest"){
+            importantLogs = importantLogs.sort((a,b) => {
+            return (a.time < b.time) ? 1 : -1
             })
         }
-    logs = logs.sort((a,b) => {
-        return (a.log < b.log) ? 1 : -1
-    })
-    } else if (value.data === "Oldest"){
-    logs = logs.sort((a,b) => {
-        return (a.time > b.time) ? 1 : -1
-    })
-    } else if (value.data === "Newest"){
-    logs = logs.sort((a,b) => {
-        return (a.time < b.time) ? 1 : -1
-    })
     }
 
-    displayImportant()
 }
 
 const displayImportant = () => {
@@ -85,6 +87,7 @@ router.post('/', (req, res) => {
     sort = req.body
     if (sort.data === false || sort.data === true){
         important = sort.data
+        displayImportant()
         res.send(`important sort ${req.body}`);
     }
     else{
@@ -116,6 +119,7 @@ watcher.on('add', path => {
         }
     }
     sortLogs(sort)
+    displayImportant()
     console.log(logs)
 })
 
@@ -132,6 +136,7 @@ watcher.on('unlink', path => {
         }
     }
     sortLogs(sort)
+    displayImportant()
     console.log(logs)
 })
 
@@ -163,6 +168,7 @@ watcher.on('change', path => {
         }
     }
     sortLogs(sort)
+    displayImportant()
     console.log(logs)
 })
 
