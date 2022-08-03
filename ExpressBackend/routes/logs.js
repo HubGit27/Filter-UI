@@ -2,6 +2,7 @@ import express, { Router } from 'express';
 import chokidar from "chokidar";
 import {readFileSync} from 'node:fs';
 import cors from 'cors'
+import e from 'express';
 
 
 const router = express.Router();
@@ -18,22 +19,39 @@ let importantLogs = []
 
 const sortLogs = (value) => {
     if (value.data === "A-Z"){
-        logs = logs.sort((a,b) => {
-            return (a.log > b.log) ? 1 : -1
-        })
-        } else if  (value.data === "Z-A"){
-        logs = logs.sort((a,b) => {
-            return (a.log < b.log) ? 1 : -1
-        })
-        } else if (value.data === "Oldest"){
-        logs = logs.sort((a,b) => {
-            return (a.time > b.time) ? 1 : -1
-        })
-        } else if (value.data === "Newest"){
-        logs = logs.sort((a,b) => {
-            return (a.time < b.time) ? 1 : -1
-        })
+        if (important === true){
+            importantLogs = importantLogs.sort((a,b) => {
+                console.log(a)
+                return (a.important > b.important) ? 1 : -1
+            })
+        }else {
+            logs = logs.sort((a,b) => {
+                return (a.log > b.log) ? 1 : -1
+            })
         }
+
+    } else if  (value.data === "Z-A"){
+        if (important === true){
+            importantLogs = importantLogs.sort((a,b) => {
+                return (a.important < b.important) ? 1 : -1
+            })
+        }else {
+            logs = logs.sort((a,b) => {
+                return (a.log < b.log) ? 1 : -1
+            })
+        }
+    logs = logs.sort((a,b) => {
+        return (a.log < b.log) ? 1 : -1
+    })
+    } else if (value.data === "Oldest"){
+    logs = logs.sort((a,b) => {
+        return (a.time > b.time) ? 1 : -1
+    })
+    } else if (value.data === "Newest"){
+    logs = logs.sort((a,b) => {
+        return (a.time < b.time) ? 1 : -1
+    })
+    }
 
     displayImportant()
 }
@@ -46,7 +64,7 @@ const displayImportant = () => {
         let logdate = /(?<=\>1 ).*?(?=\.)+/g;
         let temp1 = (logs[i].log.match(logdate) || []).join('');
         if (temp.length > 0){
-            importantLogs.push({log:temp1+" - "+temp, time: logs[i].time})
+            importantLogs.push({log:temp1+" - "+temp, important: temp, time: logs[i].time})
         }
     }
 }

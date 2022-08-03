@@ -23,6 +23,7 @@ function App() {
         api.get("/logs").then((r) => { 
             for (let i = 0; i < r.data.length; i++){
                 r.data[i].id = uuidv4()
+                r.data[i].highlight = false
             }
             setSavedLogs(r.data)
         })
