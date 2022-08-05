@@ -9,9 +9,8 @@ const app = express();
 const PORT = 5000;
 
 app.use(cors({
-    origin: 'http://'+process.env.HOST_IP_ADDRESS+':3000'
+    origin: `http://${process.env.HOST_IP_ADDRESS}:3000`
 }))
-
 app.use(bodyParser.json());
 
 app.use('/logs', logsRoutes)

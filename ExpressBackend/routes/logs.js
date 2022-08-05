@@ -6,8 +6,9 @@ import 'dotenv/config'
 
 const router = express.Router();
 router.use(cors({
-    origin: 'http://'+process.env.HOST_IP_ADDRESS+':3000'
+    origin: `http://${process.env.HOST_IP_ADDRESS}:3000`
 }))
+
 //{log: "test1"}
 let logs = []
 let filelogs = new Object();
