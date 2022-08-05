@@ -15,9 +15,9 @@ function App() {
   const [runAuto, setRunAuto] = React.useState(true)
 
   const api = axios.create({
-    baseURL: "http://localhost:5000"
+    baseURL: "http://"+process.env.REACT_APP_HOST_IP_ADDRESS +":5000"
   })
-
+  console.log(process.env.REACT_APP_HOST_IP_ADDRESS)
   React.useEffect(() => {
     const getLogs = () => {
         api.get("/logs").then((r) => { 
