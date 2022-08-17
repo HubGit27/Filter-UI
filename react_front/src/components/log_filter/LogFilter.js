@@ -8,6 +8,7 @@ const LogFilter = ({logs, trackLogs, chooseSort, important}) => {
   const[filterBlocks, setFilterBlocks] = useState(localStorage.FILTERBLOCKSLOGFILTER ? JSON.parse(localStorage.FILTERBLOCKSLOGFILTER) : [])
   const[importantBoolean, setImportantBoolean] = useState(true)
 
+
   useEffect(() =>{
     localStorage.setItem('FILTERBLOCKSLOGFILTER', JSON.stringify(filterBlocks))
   }, [filterBlocks])
@@ -70,37 +71,44 @@ const LogFilter = ({logs, trackLogs, chooseSort, important}) => {
       block.regex = false
     }
     setFilterBlocks([...filterBlocks])
-
   }
 
   const processLogs = (logs, filterBlocks) => {
     const ands = []
     const ors = []
+    const highlights = []
+    for (let i = 0; i < logs.length; i++) {
+      logs[i].highlight = false
+    }
     for (let i = 0; i < filterBlocks.length; i++) {
       if (filterBlocks[i].checkbox === true && filterBlocks[i].regex === false){
           if (filterBlocks[i].andor === "and"){
             ands.push(filterBlocks[i].filterBy)
-
           }else if (filterBlocks[i].andor === "or"){
             ors.push(filterBlocks[i].filterBy)
+          }else if (filterBlocks[i].andor === "highlight"){
+            highlights.push(filterBlocks[i].filterBy)
           }
       } 
+
+      //Logic for Regex
       if (filterBlocks[i].checkbox === true && filterBlocks[i].regex === true){
-        let regex = new RegExp(filterBlocks[i].filterBy);
+          let reg = ""
+        try {
+          reg = new RegExp(filterBlocks[i].filterBy);
+        } catch(e){
+          reg = ""
+        }
         for (let j = 0; j < logs.length; j++ ){
-          let temp = (logs[j].log.match(regex) || []).join('');
-          if (temp.length > 0 && filterBlocks[i].andor === "and" &&ands.indexOf(temp) < 1){
-              ands.push(temp)
-          } else if (temp.length > 0 && filterBlocks[i].andor === "or"){
+          let temp = (logs[j].log.toLowerCase().match(reg) || []).join('');
+          if (temp.length > 0 && ors.indexOf(temp) < 1 && filterBlocks[i].andor !== "highlight"){
               ors.push(temp)
+          } else if (temp.length > 0 && ors.indexOf(temp) < 1 && filterBlocks[i].andor === "highlight"){
+            highlights.push(temp)
           }
         }
       }
     }
-
-    //console.log(ands)
-    //console.log(ors)
-
     let output = []
     // filter for, or
     if (ors.length > 0){
@@ -111,12 +119,21 @@ const LogFilter = ({logs, trackLogs, chooseSort, important}) => {
     if (output.length < 1 || ors.length < 1){
       output = logs
     }
-
     // filter for ands
     const output1 = output.filter((log) => {
         return ands.every(val => log.log.toLowerCase().includes(val))
     })
 
+    for (let i = 0; i < highlights.length; i++ ){
+      if (highlights[i].length > 0){
+        for (let j = 0; j < output1.length; j++ ){
+          if (output1[j].log.toLowerCase().includes(highlights[i])){
+            output1[j].highlight = true
+          } 
+        }
+      }
+
+    }
     return output1
   }
 

@@ -1,9 +1,9 @@
 import React from 'react'
 
-
 const Log = (log) => {
   return (
-    <div className="logentry">{log.log.log}</div>
+    <div className= {log.log.highlight === true ? "hlogentry" : "logentry"}
+     >{log.log.log}</div>
   )
 }
 
