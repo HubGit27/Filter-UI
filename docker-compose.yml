@@ -20,8 +20,12 @@ services:
         REACT_APP_HOST_IP_ADDRESS: ${IP_ADDRESS}
     image: react
     stdin_open: true
+    volumes:
+      - ./react_front/filterui.crt:/etc/react_front/filterui.crt # New Line!
+      - ./react_front/filterui.key:/etc/react_front/filterui.key # New Line!
     ports:
       - "3000:80"
+      - "3001:443"
     networks:
       - react-express
     depends_on:
