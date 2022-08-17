@@ -6,7 +6,7 @@ import 'dotenv/config'
 
 const router = express.Router();
 router.use(cors({
-    origin: `http://${process.env.HOST_IP_ADDRESS}:3000`
+    origin: true
 }))
 
 //{log: "test1"}
